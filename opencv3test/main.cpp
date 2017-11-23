@@ -31,9 +31,9 @@ const Rect LOADING_RED_TEAM_SR = Rect(1208, 228, 112, 59);
 const Rect MENU_STILL_SR = Rect(1102, 507, 89, 31);
 
 const Rect SR_ROI = Rect(992, 1011, 296, 29);
-const Rect SCOREBOARD_ROI = Rect(1570, 289, 131, 131);
-const Rect LOADING_ROI = Rect(1735, 904, 83, 83);
-const Rect MENU_ROI = Rect(1091, 565, 60, 60);
+const Rect SCOREBOARD_ROI = Rect(1570, 284, 131, 131);
+const Rect LOADING_ROI = Rect(1735, 896, 83, 83);
+const Rect MENU_ROI = Rect(1091, 564, 60, 60);
 
 Mat get_roi(Mat frame, Rect roi, int binThreshold) {
 	cvtColor(frame, frame, CV_BGR2GRAY);
@@ -88,12 +88,12 @@ bool matchWithPattern(Mat frame, Mat pattern, Rect roi, double detectionThreshol
 	threshold(frameRoi, frameRoi, 128, 255, CV_THRESH_BINARY);
 	cvtColor(pattern, pattern, CV_BGR2GRAY);
 
-	imshow("frameRoi", frameRoi);
-	imshow("pattern", pattern);
+	//imshow("frameRoi", frameRoi);
+	//imshow("pattern", pattern);
 
 	Mat diff;
 	absdiff(frameRoi, pattern, diff);
-	imshow("diff", diff);
+	//imshow("diff", diff);
 	double diffSum = mean(diff)[0];
 	cout << diffSum << " ";
 	return diffSum < detectionThreshold;
@@ -105,15 +105,16 @@ void savePattern(Mat frame, Rect roi, int binThreshold, string filename) {
 	imwrite(filename, binarized);
 }
 
-void OCR(tesseract::TessBaseAPI* api, Mat image, char* outText) {
+string OCR(tesseract::TessBaseAPI* api, Mat image) {
 	//Pix* tessImg = pixRead("try.png");
-	imwrite("temp.png", image);
-	Pix* tesImg = pixRead("temp.png");
+	imwrite("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp", image);
+	Pix* tesImg = pixRead("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp");
 	api->SetImage(tesImg);
 	//api->SetImage(tessImg);
 	api->SetVariable("classify_bln_numeric_mode", "1");
-	outText = api->GetUTF8Text();
-	printf("OCR:\n%s", outText);
+	string outText = string(api->GetUTF8Text());
+	//printf("OCR:\n%s", outText);
+	return outText;
 }
 
 Mat hwnd2mat(HWND hwnd) {
@@ -192,8 +193,8 @@ int main(int argc, char** argv) {
 		/*bool ok = vid.read(currentFrame);
 		if (!ok) break;*/
 
-		//currentFrame = hwnd2mat(hDesktopWnd);
-		currentFrame = openImage("C:\\Projects\\owtracker\\x64\\Debug\\currentFrame.png");
+		currentFrame = hwnd2mat(hDesktopWnd);
+		//currentFrame = openImage("C:\\Projects\\owtracker\\x64\\Debug\\currentFrame.png");
 		//cout << currentFrame.cols << " " << currentFrame.rows << endl;
 
 /*
@@ -203,43 +204,56 @@ int main(int argc, char** argv) {
 		cout << "time: " << timestamp << " frame N: " << frameCount << " progress: " << progress << endl;
 */
 		bool isSr = matchWithPattern(currentFrame, binPattern, SR_ROI, 25);
-		/*bool isScoreboard =  matchWithPattern(currentFrame, scoreboardPattern, SCOREBOARD_ROI, 10);
-		bool isLoading =  matchWithPattern(currentFrame, loadingPattern, LOADING_ROI, 10);
-		bool isMenu =  matchWithPattern(currentFrame, menuPattern, MENU_ROI, 10);*/
+		bool isScoreboard =  matchWithPattern(currentFrame, scoreboardPattern, SCOREBOARD_ROI, 25);
+		bool isLoading =  matchWithPattern(currentFrame, loadingPattern, LOADING_ROI, 20);
+		bool isMenu =  matchWithPattern(currentFrame, menuPattern, MENU_ROI, 30);
 
-		bool isScoreboard = false;
-		bool isLoading = false;
-		bool isMenu = false;
+		//bool isSr = false;
+		//bool isScoreboard = false;
+		//bool isLoading = false;
+		//bool isMenu = false;
 		cout << endl;
 		if (isSr) {
 			cout << "sr screen found" << endl;
-			char outText;
+			
 			Mat toOcr = get_sr(currentFrame);
-			OCR(api, toOcr, &outText);
+			string outText = OCR(api, toOcr);
+			cout << outText << endl;
 		}
 		if (isScoreboard) {
 			cout << "scoreboard screen found" << endl;
-			char outText[7];
+			string outText[7];
 			Mat scores[7];
 			get_scores(currentFrame, scores);
 			for (int i = 0; i < 7; i++) {
-				OCR(api, scores[i], &outText[i]);
+				outText[i] = OCR(api, scores[i]);
 			}
+
+			cout << "ELIM " << outText[0] << endl;
+			cout << "OBJ " << outText[1] << endl;
+			cout << "OBJTIME " << outText[2] << endl;
+			cout << "DMG " << outText[3] << endl;
+			cout << "HEAL " << outText[4] << endl;
+			cout << "DEATH " << outText[5] << endl;
+			cout << "TIME " << outText[6] << endl;
 		}
 		if (isLoading) {
 			cout << "loading screen found" << endl;
-			char outText[2];
+			string outText[2];
 			Mat teams_sr[2];
 			get_teams_sr(currentFrame, teams_sr);
-			OCR(api, teams_sr[0], &outText[0]);
-			OCR(api, teams_sr[1], &outText[1]);
+			outText[0] = OCR(api, teams_sr[0]);
+			outText[1] = OCR(api, teams_sr[1]);
+			cout << outText[0] << endl;
+			cout << outText[1] << endl;
+
 
 		}
 		if (isMenu) {
 			cout << "menu screen found" << endl;
-			char outText;
 			Mat toOcr = get_menu_sr(currentFrame);
-			OCR(api, toOcr, &outText);
+			string outText = OCR(api, toOcr);
+			cout << outText << endl;
 		}
 
 		char c = (char)waitKey(25);

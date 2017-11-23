@@ -17,6 +17,14 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="test|Win32">
+      <Configuration>test</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="test|x64">
+      <Configuration>test</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CD2C9C7C-714D-4F04-9CAF-5933F9E6BFA3}</ProjectGuid>
@@ -38,16 +46,30 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='test|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -62,10 +84,16 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='test|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -106,16 +134,37 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;D:\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;D:\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalUsingDirectories>
+      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalUsingDirectories>
+      <AdditionalOptions>/D_ITERATOR_DEBUG_LEVEL=1 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\Release;D:\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\x64\Debug;C:\Projects\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world320.lib;opencv_world320d.lib;giflib.lib;libjpeg.lib;liblept.lib;libpng.lib;libtesseract.lib;libtiff.lib;libwebp.lib;openjpeg.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TargetMachine>MachineX64</TargetMachine>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='test|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalUsingDirectories>
+      <AdditionalOptions>/D_ITERATOR_DEBUG_LEVEL=1 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\x64\Debug;C:\Projects\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world320.lib;opencv_world320d.lib;giflib.lib;libjpeg.lib;liblept.lib;libpng.lib;libtesseract.lib;libtiff.lib;libwebp.lib;openjpeg.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -125,15 +174,37 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;D:\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;D:\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalUsingDirectories>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalOptions>/D_ITERATOR_DEBUG_LEVEL=1 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\x64\Debug;D:\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\BeepBoop\Downloads\cppan-master-Windows-client\bin;C:\Projects\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world320.lib;opencv_world320d.lib;pvt.cppan.demo.danbloomberg.leptonica-1.74.4.lib;pvt.cppan.demo.gif-5.1.4.lib;pvt.cppan.demo.google.tesseract.libtesseract-master.lib;pvt.cppan.demo.jpeg-9.2.0.lib;pvt.cppan.demo.madler.zlib-1.2.11.lib;pvt.cppan.demo.mgk25.jbig.ar-2.1.0.lib;pvt.cppan.demo.mgk25.jbig.jbig-2.1.0.lib;pvt.cppan.demo.openjpeg.openjp2-2.3.0.lib;pvt.cppan.demo.png-1.6.33.lib;pvt.cppan.demo.tiff-4.0.8.lib;pvt.cppan.demo.webp-0.6.0.lib;pvt.cppan.demo.xz_utils.lzma-5.2.3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='test|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\liblept;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccstruct;C:\Projects\tesseract-build\VS2015_Tesseract\leptonica\src;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\api;C:\Projects\opencv320\opencv\build\include;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccutil;C:\Projects\tesseract-build\VS2015_Tesseract\tesseract_3.05\ccmain;%(AdditionalIncludeDirectories)</AdditionalUsingDirectories>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <AdditionalOptions>/D_ITERATOR_DEBUG_LEVEL=1 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Projects\tesseract-build\VS2015_Tesseract\x64\Debug;C:\Projects\opencv320\opencv\build\x64\vc14\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world320.lib;opencv_world320d.lib;giflib.lib;libjpeg.lib;liblept.lib;libpng.lib;libtesseract.lib;libtiff.lib;libwebp.lib;openjpeg.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
