@@ -60,13 +60,13 @@ void get_teams_sr(Mat frame, Mat* output) {
 }
 
 void get_scores(Mat frame, Mat* output) {
-	output[0] = get_roi(frame, SCOREBOARD_ELIMS, 128);
-	output[1] = get_roi(frame, SCOREBOARD_OBJ_ELIMS, 128);
-	output[2] = get_roi(frame, SCOREBOARD_OBJ_TIME, 128);
-	output[3] = get_roi(frame, SCOREBOARD_DAMAGE, 128);
-	output[4] = get_roi(frame, SCOREBOARD_HEALING, 128);
-	output[5] = get_roi(frame, SCOREBOARD_DEATHS, 128);
-	output[6] = get_roi(frame, SCOREBOARD_MATCH_TIME, 128);
+	output[0] = get_roi(frame, SCOREBOARD_ELIMS, 64);
+	output[1] = get_roi(frame, SCOREBOARD_OBJ_ELIMS, 64);
+	output[2] = get_roi(frame, SCOREBOARD_OBJ_TIME, 64);
+	output[3] = get_roi(frame, SCOREBOARD_DAMAGE, 64);
+	output[4] = get_roi(frame, SCOREBOARD_HEALING, 64);
+	output[5] = get_roi(frame, SCOREBOARD_DEATHS, 64);
+	output[6] = get_roi(frame, SCOREBOARD_MATCH_TIME, 64);
 }
 
 
@@ -106,7 +106,7 @@ void savePattern(Mat frame, Rect roi, int binThreshold, string filename) {
 	imwrite(filename, binarized);
 }
 
-string OCR(tesseract::TessBaseAPI* api, Mat image) {
+string OCR(tesseract::TessBaseAPI* api, Mat image, bool deskew=false) {
 	clock_t functime = clock();
 
 	Point2f orig[4];
@@ -122,11 +122,16 @@ string OCR(tesseract::TessBaseAPI* api, Mat image) {
 	conv[2] = Point2f(102, 59);
 	conv[3] = Point2f(0, 59);
 	Mat trasnformMatrix = getPerspectiveTransform(orig, conv);
-
-	Mat unskewed;
-	warpPerspective(image, unskewed, trasnformMatrix, Size(image.cols, image.rows));
-	imshow("skew", unskewed);
-	imwrite("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp", unskewed);
+	if (deskew) {
+		Mat unskewed;
+		warpPerspective(image, unskewed, trasnformMatrix, Size(image.cols, image.rows));
+		//imshow("skew", unskewed);
+		imwrite("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp", unskewed);
+	}
+	else {
+		imwrite("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp", image);
+	}
+	
 	//cout << "OCR write image: " << double(clock() - functime) / CLOCKS_PER_SEC << endl;
 	Pix* tesImg = pixRead("C:\\Projects\\owtracker\\x64\\Debug\\temp.bmp");
 	//cout << "OCR read image: " << double(clock() - functime) / CLOCKS_PER_SEC << endl;
@@ -201,7 +206,7 @@ int main(int argc, char** argv) {
 	tesseract::TessBaseAPI *owTess = new tesseract::TessBaseAPI();
 	tesseract::TessBaseAPI *engTess = new tesseract::TessBaseAPI();
 
-	if (owTess->Init(NULL, "eng")) {
+	if (owTess->Init(NULL, "owdig")) {
 		fprintf(stderr, "Could not init tesseract\n");
 		exit(1);
 	}
@@ -216,7 +221,30 @@ int main(int argc, char** argv) {
 	Mat scoreboardPattern = openImage("C:\\Projects\\owtracker\\x64\\Debug\\scoreboard_pattern.png");
 	Mat loadingPattern = openImage("C:\\Projects\\owtracker\\x64\\Debug\\loading_pattern.png");
 	Mat menuPattern = openImage("C:\\Projects\\owtracker\\x64\\Debug\\menu_still_pattern.png");
+	
 
+	//Point2f orig[4];
+	//Point2f conv[4];
+
+	//orig[0] = Point2f(29, 10);
+	//orig[1] = Point2f(660, 10);
+	//orig[2] = Point2f(651, 39);
+	//orig[3] = Point2f(22, 39);
+
+	//conv[0] = Point2f(22, 10);
+	//conv[1] = Point2f(653, 10);
+	//conv[2] = Point2f(651, 39);
+	//conv[3] = Point2f(22, 39);
+	//Mat trasnformMatrix = getPerspectiveTransform(orig, conv);
+
+	//for (int i = 0; i < 9; i++) {
+	//	Mat training = openImage("C:\\Projects\\owtracker\\x64\\Debug\\training\\new\\newnew\\deitalize" + to_string(i) + ".png");
+	//	Mat unskewed;
+	//	warpPerspective(training, unskewed, trasnformMatrix, Size(training.cols, training.rows));
+	//	//imshow("skew", unskewed);
+	//	imwrite("C:\\Projects\\owtracker\\x64\\Debug\\training\\new\\newnew\\owdig.bignoodletooobliquei.exp" + to_string(i) + ".bmp", unskewed);
+	//}
+	
 	
 
 	
@@ -254,7 +282,7 @@ int main(int argc, char** argv) {
 			cout << "sr screen found" << endl;
 			
 			Mat toOcr = get_sr(currentFrame);
-			string outText = OCR(owTess, toOcr);
+			string outText = OCR(owTess, toOcr, true);
 			cout << outText << endl;
 		}
 		if (isScoreboard) {
@@ -262,15 +290,15 @@ int main(int argc, char** argv) {
 			string outText[7];
 			Mat scores[7];
 			get_scores(currentFrame, scores);
-			//for (int i = 0; i < 7; i++) {
-			outText[0] = OCR(owTess, scores[0]);
-			outText[1] = OCR(owTess, scores[1]);
-			outText[2] = OCR(owTess, scores[2]);
-			outText[3] = OCR(owTess, scores[3]);
-			outText[4] = OCR(owTess, scores[4]);
-			outText[5] = OCR(owTess, scores[5]);
-			outText[6] = OCR(engTess, scores[6]);
-			//}
+			for (int i = 0; i < 7; i++) {
+				outText[0] = OCR(owTess, scores[0], true);
+				outText[1] = OCR(owTess, scores[1], true);
+				outText[2] = OCR(owTess, scores[2], true);
+				outText[3] = OCR(owTess, scores[3], true);
+				outText[4] = OCR(owTess, scores[4], true);
+				outText[5] = OCR(owTess, scores[5], true);
+				outText[6] = OCR(engTess, scores[6]);
+			}
 
 			cout << "ELIM " << outText[0] << endl;
 			cout << "OBJ " << outText[1] << endl;
@@ -285,8 +313,8 @@ int main(int argc, char** argv) {
 			string outText[2];
 			Mat teams_sr[2];
 			get_teams_sr(currentFrame, teams_sr);
-			outText[0] = OCR(owTess, teams_sr[0]);
-			outText[1] = OCR(owTess, teams_sr[1]);
+			outText[0] = OCR(owTess, teams_sr[0], true);
+			outText[1] = OCR(owTess, teams_sr[1], true);
 			cout << outText[0] << endl;
 			cout << outText[1] << endl;
 
